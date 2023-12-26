@@ -13,7 +13,6 @@ export default function EditScreenInfo({path}: {path: string}) {
   const [partName, setPartName] = useState('');
   const [partValue, setPartValue] = useState('');
   const [isSaved, setIsSaved] = useState(false);
-  const {updateMachineData} = useMachineData();
   const machineData = useSelector((state) => state);
   const dispatch = useDispatch();
 
@@ -89,7 +88,7 @@ export default function EditScreenInfo({path}: {path: string}) {
     setTimeout(() => {
       setIsSaved(false);
     }, 2000);
-  }, [machineData, updateMachineData, machineName, partName, partValue]);
+  }, [machineData, machineName, partName, partValue]);
 
   return (
     <View>

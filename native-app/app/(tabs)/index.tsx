@@ -28,7 +28,7 @@ export default function StateScreen() {
       });
 
       if (response.data?.factory) {
-        dispatch({ type: 'UPDATE_SCORES', payload: { response.data }});
+        dispatch({ type: 'UPDATE_SCORES', payload: { ...response.data }});
       }
     } catch (error) {
       console.error(error);
