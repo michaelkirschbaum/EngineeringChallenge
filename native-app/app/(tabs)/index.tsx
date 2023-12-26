@@ -18,10 +18,8 @@ if (__DEV__) {
 }
 
 export default function StateScreen() {
-  const machineData = useSelector((state) => state);
   const dispatch = useDispatch();
-  const {setScores} =
-    useMachineData();
+  const machineData = useSelector((state) => state);
 
   const calculateHealth = useCallback(async () => {
     try {
@@ -30,7 +28,7 @@ export default function StateScreen() {
       });
 
       if (response.data?.factory) {
-        setScores(response.data);
+        dispatch({ type: 'UPDATE_SCORES', payload: { response.data }});
       }
     } catch (error) {
       console.error(error);
