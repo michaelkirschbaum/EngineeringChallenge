@@ -44,6 +44,10 @@ export default function StateScreen() {
     }
   }, [machineData]);
 
+  const resetMachineData = () => {
+    dispatch({ type: 'RESET_MACHINE_DATA' });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.separator} />
@@ -106,7 +110,7 @@ export default function StateScreen() {
       <View style={styles.resetButton}>
         <Button
           title='Reset Machine Data'
-          onPress={() => dispatch({ type: 'RESET_MACHINE_DATA' })}
+          onPress={() => resetMachineData}
           color='#FF0000'
         />
       </View>

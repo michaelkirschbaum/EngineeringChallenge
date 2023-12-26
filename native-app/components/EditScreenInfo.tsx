@@ -84,26 +84,11 @@ export default function EditScreenInfo({path}: {path: string}) {
   }:3001/machine-health`;
 
   const savePart = useCallback(async () => {
-    try {
-      const newMachineData = machineData
-        ? JSON.parse(JSON.stringify(machineData))
-        : {machines: {}}; // Deep copy machine parts
-
-      if (!newMachineData.machines[machineName]) {
-        newMachineData.machines[machineName] = {};
-      }
-
-      newMachineData.machines[machineName][partName] = partValue;
-
-      await updateMachineData(newMachineData);
-      setIsSaved(true);
-      setTimeout(() => {
-        setIsSaved(false);
-      }, 2000);
-    } catch (error) {
-      console.error(error);
-      throw error; // Handle API errors appropriately
-    }
+    dispatch({ type: 'ADD_PART', payload: {machineName, partName, partValue} });
+    setIsSaved(true);
+    setTimeout(() => {
+      setIsSaved(false);
+    }, 2000);
   }, [machineData, updateMachineData, machineName, partName, partValue]);
 
   return (
@@ -126,7 +111,7 @@ export default function EditScreenInfo({path}: {path: string}) {
         placeholder='Enter part value'
       />
 
-      <Button title='Save' onPress={() => dispatch({ type: 'ADD_PART', payload: {machineName, partName, partValue} })} />
+      <Button title='Save' onPress={savePart} />
 
       {isSaved && <Text style={styles.healthScore}>Saved ✔️</Text>}
     </View>
