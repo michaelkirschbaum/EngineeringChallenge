@@ -1,5 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Platform, StyleSheet, TextInput} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 
 import {Text, View} from './Themed';
 import {MachineType} from '../data/types';
@@ -125,7 +126,7 @@ export default function EditScreenInfo({path}: {path: string}) {
         placeholder='Enter part value'
       />
 
-      <Button title='Save' onPress={savePart} />
+      <Button title='Save' onPress={() => dispatch({ type: 'ADD_PART', payload: {machineName, partName, partValue} })} />
 
       {isSaved && <Text style={styles.healthScore}>Saved ✔️</Text>}
     </View>
