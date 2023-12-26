@@ -81,11 +81,11 @@ export default function EditScreenInfo({path}: {path: string}) {
   }:3001/machine-health`;
 
   const savePart = useCallback(async () => {
+    // add or update new part value in state
     dispatch({ type: 'ADD_PART', payload: {machineName, partName, partValue} });
     setIsSaved(true);
     setTimeout(() => {
       setIsSaved(false);
-
     }, 2000);
   }, [machineName, partName, partValue]);
 

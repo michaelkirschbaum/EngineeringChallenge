@@ -3,7 +3,7 @@ import machinesReducer from './reducers/machinesReducer';
 
 const store = configureStore({
   reducer: {
-    machines: machinesReducer
+    machineData: machinesReducer
   }
 });
 

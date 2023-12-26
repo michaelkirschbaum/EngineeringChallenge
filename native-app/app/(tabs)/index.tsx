@@ -19,8 +19,8 @@ if (__DEV__) {
 
 export default function StateScreen() {
   const dispatch = useDispatch();
-  const machines = useSelector((state) => state.machines);
-  const scores = useSelector((state) => state.scores);
+  const machines = useSelector((state) => state.machineData.machines);
+  const scores = useSelector((state) => state.machineData.scores);
 
   const calculateHealth = useCallback(async () => {
     try {
@@ -29,6 +29,7 @@ export default function StateScreen() {
       });
 
       if (response.data?.factory) {
+        // set response in state
         dispatch({ type: 'UPDATE_SCORES', payload: { ...response.data }});
       }
     } catch (error) {
@@ -44,6 +45,7 @@ export default function StateScreen() {
   }, [machines]);
 
   const resetMachineData = () => {
+    // clear machine state
     dispatch({ type: 'RESET_MACHINE_DATA' });
   }
 
@@ -109,7 +111,7 @@ export default function StateScreen() {
       <View style={styles.resetButton}>
         <Button
           title='Reset Machine Data'
-          onPress={() => resetMachineData}
+          onPress={resetMachineData}
           color='#FF0000'
         />
       </View>
