@@ -3,9 +3,10 @@ import {Text, View} from '../../components/Themed';
 import {Link, useFocusEffect} from 'expo-router';
 import axios from 'axios';
 import {useMachineData} from '../useMachineData';
-import {useCallback, useState} from 'react';
+import {useCallback, useState, useContext} from 'react';
 import {PartsOfMachine} from '../../components/PartsOfMachine';
 import {MachineScore} from '../../components/MachineScore';
+import {AuthContext} from '../login';
 
 let apiUrl: string =
   'https://fancy-dolphin-65b07b.netlify.app/api/machine-health';
@@ -19,6 +20,8 @@ if (__DEV__) {
 export default function StateScreen() {
   const {machineData, resetMachineData, loadMachineData, setScores} =
     useMachineData();
+
+  const [authState, setAuthState] = useContext(AuthContext);
 
   //Doing this because we're not using central state like redux
   useFocusEffect(
