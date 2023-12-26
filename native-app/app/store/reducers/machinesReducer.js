@@ -8,11 +8,11 @@ const initialState = {
   }
 };
 
-const addPart = createAction('ADD_PART');
 const updateScores = createAction('UPDATE_SCORES');
+const addPart = createAction('ADD_PART');
 const resetMachineData = createAction('RESET_MACHINE_DATA');
 
-export default partsReducer = createReducer(initialState, (builder) => {
+export default machinesReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(updateScores, (state, action) => {
       return {
@@ -27,12 +27,10 @@ export default partsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(addPart, (state, action) => {
       return {
-        machines: {
-          ...state.machines,
-          [action.payload.machineName]: {
-            ...(state.machines && action.payload.machineName in state.machines && state.machines[action.payload.machineName]),
-            [action.payload.partName]: action.payload.partValue
-          }
+        ...state.machines,
+        [action.payload.machineName]: {
+          ...(state.machines && action.payload.machineName in state.machines && state.machines[action.payload.machineName]),
+          [action.payload.partName]: action.payload.partValue
         }
       };
     })

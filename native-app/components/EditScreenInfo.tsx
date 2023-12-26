@@ -13,6 +13,7 @@ export default function EditScreenInfo({path}: {path: string}) {
   const [partValue, setPartValue] = useState('');
   const [isSaved, setIsSaved] = useState(false);
   const dispatch = useDispatch();
+  const machineData = useSelector((state) => state);
 
   const machineNames = [
     {label: 'Welding Robot', value: MachineType.WeldingRobot},
@@ -85,6 +86,7 @@ export default function EditScreenInfo({path}: {path: string}) {
     setIsSaved(true);
     setTimeout(() => {
       setIsSaved(false);
+
     }, 2000);
   }, [machineName, partName, partValue]);
 

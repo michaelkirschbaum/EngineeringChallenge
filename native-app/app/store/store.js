@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import partsReducer from './reducers/partsReducer';
+import machinesReducer from './reducers/machinesReducer';
 
 const store = configureStore({
   reducer: {
-    parts: partsReducer
+    machines: machinesReducer
   }
 });
 
