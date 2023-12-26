@@ -4,6 +4,7 @@ import {Link, useFocusEffect} from 'expo-router';
 import axios from 'axios';
 import {useMachineData} from '../useMachineData';
 import {useCallback, useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {PartsOfMachine} from '../../components/PartsOfMachine';
 import {MachineScore} from '../../components/MachineScore';
 
@@ -17,15 +18,10 @@ if (__DEV__) {
 }
 
 export default function StateScreen() {
-  const {machineData, resetMachineData, loadMachineData, setScores} =
+  const machineData = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const {setScores} =
     useMachineData();
-
-  //Doing this because we're not using central state like redux
-  useFocusEffect(
-    useCallback(() => {
-      loadMachineData();
-    }, []),
-  );
 
   const calculateHealth = useCallback(async () => {
     try {
@@ -51,14 +47,14 @@ export default function StateScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.separator} />
-      {!machineData && (
+      {!machineData.machines && (
         <Link href='/two' style={styles.link}>
           <Text style={styles.linkText}>
             Please log a part to check machine health
           </Text>
         </Link>
       )}
-      {machineData && (
+      {machineData.machines && (
         <>
           <PartsOfMachine
             machineName={'Welding Robot'}
@@ -110,7 +106,7 @@ export default function StateScreen() {
       <View style={styles.resetButton}>
         <Button
           title='Reset Machine Data'
-          onPress={async () => await resetMachineData()}
+          onPress={dispatch({ type: 'RESET_MACHINE_DATA' })}
           color='#FF0000'
         />
       </View>
