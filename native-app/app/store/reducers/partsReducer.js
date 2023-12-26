@@ -1,16 +1,30 @@
 import {createReducer, createAction} from '@reduxjs/toolkit';
 
 const initialState = {
-  machines: null
+  machines: null,
+  scores: {
+    factory: null,
+    machineScores: null
+  }
 };
 
 const addPart = createAction('ADD_PART');
-const addScore = createAction('ADD_SCORE');
+const updateScores = createAction('UPDATE_SCORES');
 const resetMachineData = createAction('RESET_MACHINE_DATA');
 
 export default partsReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(addScore, (state, action) => {})
+    .addCase(updateScores, (state, action) => {
+      return {
+        ...state,
+        scores: {
+          factory: action.payload.factory,
+          machineScores: {
+            ...action.payload.machineScores
+          }
+        }
+      };
+    })
     .addCase(addPart, (state, action) => {
       return {
         machines: {
