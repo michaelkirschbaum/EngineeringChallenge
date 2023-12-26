@@ -30,7 +30,7 @@ export default partsReducer = createReducer(initialState, (builder) => {
         machines: {
           ...state.machines,
           [action.payload.machineName]: {
-            ...state.machines[action.payload.machineName],
+            ...(state.machines && action.payload.machineName in state.machines && state.machines[action.payload.machineName]),
             [action.payload.partName]: action.payload.partValue
           }
         }

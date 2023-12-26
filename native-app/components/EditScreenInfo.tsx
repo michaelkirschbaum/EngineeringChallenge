@@ -4,7 +4,6 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import {Text, View} from './Themed';
 import {MachineType} from '../data/types';
-import {useMachineData} from '../app/useMachineData';
 import {useFocusEffect} from 'expo-router';
 import Picker from './Picker';
 
@@ -13,7 +12,6 @@ export default function EditScreenInfo({path}: {path: string}) {
   const [partName, setPartName] = useState('');
   const [partValue, setPartValue] = useState('');
   const [isSaved, setIsSaved] = useState(false);
-  const machineData = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const machineNames = [
@@ -88,7 +86,7 @@ export default function EditScreenInfo({path}: {path: string}) {
     setTimeout(() => {
       setIsSaved(false);
     }, 2000);
-  }, [machineData, machineName, partName, partValue]);
+  }, [machineName, partName, partValue]);
 
   return (
     <View>
