@@ -106,7 +106,7 @@ export default function StateScreen() {
       <View style={styles.resetButton}>
         <Button
           title='Reset Machine Data'
-          onPress={dispatch({ type: 'RESET_MACHINE_DATA' })}
+          onPress={() => dispatch({ type: 'RESET_MACHINE_DATA' })}
           color='#FF0000'
         />
       </View>
