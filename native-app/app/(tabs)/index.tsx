@@ -2,8 +2,9 @@ import {Button, Platform, StyleSheet} from 'react-native';
 import {Text, View} from '../../components/Themed';
 import {Link, useFocusEffect} from 'expo-router';
 import axios from 'axios';
-import {useMachineData} from '../useMachineData';
 import {useCallback, useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+
 import {PartsOfMachine} from '../../components/PartsOfMachine';
 import {MachineScore} from '../../components/MachineScore';
 
@@ -17,24 +18,19 @@ if (__DEV__) {
 }
 
 export default function StateScreen() {
-  const {machineData, resetMachineData, loadMachineData, setScores} =
-    useMachineData();
-
-  //Doing this because we're not using central state like redux
-  useFocusEffect(
-    useCallback(() => {
-      loadMachineData();
-    }, []),
-  );
+  const dispatch = useDispatch();
+  const machines = useSelector((state) => state.machineData.machines);
+  const scores = useSelector((state) => state.machineData.scores);
 
   const calculateHealth = useCallback(async () => {
     try {
       const response = await axios.post(apiUrl, {
-        machines: machineData?.machines,
+        machines: machines,
       });
 
       if (response.data?.factory) {
-        setScores(response.data);
+        // set response in state
+        dispatch({ type: 'UPDATE_SCORES', payload: { ...response.data }});
       }
     } catch (error) {
       console.error(error);
@@ -46,35 +42,40 @@ export default function StateScreen() {
         }`,
       );
     }
-  }, [machineData]);
+  }, [machines]);
+
+  const resetMachineData = () => {
+    // clear machine state
+    dispatch({ type: 'RESET_MACHINE_DATA' });
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.separator} />
-      {!machineData && (
+      {!machines && (
         <Link href='/two' style={styles.link}>
           <Text style={styles.linkText}>
             Please log a part to check machine health
           </Text>
         </Link>
       )}
-      {machineData && (
+      {machines && (
         <>
           <PartsOfMachine
             machineName={'Welding Robot'}
-            parts={machineData?.machines?.weldingRobot}
+            parts={machines?.weldingRobot}
           />
           <PartsOfMachine
             machineName={'Assembly Line'}
-            parts={machineData?.machines?.assemblyLine}
+            parts={machines?.assemblyLine}
           />
           <PartsOfMachine
             machineName={'Painting Station'}
-            parts={machineData?.machines?.paintingStation}
+            parts={machines?.paintingStation}
           />
           <PartsOfMachine
             machineName={'Quality Control Station'}
-            parts={machineData?.machines?.qualityControlStation}
+            parts={machines?.qualityControlStation}
           />
           <View
             style={styles.separator}
@@ -83,18 +84,18 @@ export default function StateScreen() {
           />
           <Text style={styles.title}>Factory Health Score</Text>
           <Text style={styles.text}>
-            {machineData?.scores?.factory
-              ? machineData?.scores?.factory
+            {scores?.factory
+              ? scores?.factory
               : 'Not yet calculated'}
           </Text>
-          {machineData?.scores?.machineScores && (
+          {scores?.machineScores && (
             <>
               <Text style={styles.title2}>Machine Health Scores</Text>
-              {Object.keys(machineData?.scores?.machineScores).map((key) => (
+              {Object.keys(scores?.machineScores).map((key) => (
                 <MachineScore
                   key={key}
                   machineName={key}
-                  score={machineData?.scores?.machineScores[key]}
+                  score={scores?.machineScores[key]}
                 />
               ))}
             </>
@@ -110,7 +111,7 @@ export default function StateScreen() {
       <View style={styles.resetButton}>
         <Button
           title='Reset Machine Data'
-          onPress={async () => await resetMachineData()}
+          onPress={resetMachineData}
           color='#FF0000'
         />
       </View>

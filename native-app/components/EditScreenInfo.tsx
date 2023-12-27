@@ -1,9 +1,9 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Platform, StyleSheet, TextInput} from 'react-native';
+import {useDispatch} from 'react-redux';
 
 import {Text, View} from './Themed';
 import {MachineType} from '../data/types';
-import {useMachineData} from '../app/useMachineData';
 import {useFocusEffect} from 'expo-router';
 import Picker from './Picker';
 
@@ -12,7 +12,7 @@ export default function EditScreenInfo({path}: {path: string}) {
   const [partName, setPartName] = useState('');
   const [partValue, setPartValue] = useState('');
   const [isSaved, setIsSaved] = useState(false);
-  const {machineData, updateMachineData, loadMachineData} = useMachineData();
+  const dispatch = useDispatch();
 
   const machineNames = [
     {label: 'Welding Robot', value: MachineType.WeldingRobot},
@@ -81,34 +81,13 @@ export default function EditScreenInfo({path}: {path: string}) {
   }:3001/machine-health`;
 
   const savePart = useCallback(async () => {
-    try {
-      const newMachineData = machineData
-        ? JSON.parse(JSON.stringify(machineData))
-        : {machines: {}}; // Deep copy machine parts
-
-      if (!newMachineData.machines[machineName]) {
-        newMachineData.machines[machineName] = {};
-      }
-
-      newMachineData.machines[machineName][partName] = partValue;
-
-      await updateMachineData(newMachineData);
-      setIsSaved(true);
-      setTimeout(() => {
-        setIsSaved(false);
-      }, 2000);
-    } catch (error) {
-      console.error(error);
-      throw error; // Handle API errors appropriately
-    }
-  }, [machineData, updateMachineData, machineName, partName, partValue]);
-
-  //Doing this because we're not using central state like redux
-  useFocusEffect(
-    useCallback(() => {
-      loadMachineData();
-    }, []),
-  );
+    // add or update new part value in state
+    dispatch({ type: 'ADD_PART', payload: {machineName, partName, partValue} });
+    setIsSaved(true);
+    setTimeout(() => {
+      setIsSaved(false);
+    }, 2000);
+  }, [machineName, partName, partValue]);
 
   return (
     <View>
