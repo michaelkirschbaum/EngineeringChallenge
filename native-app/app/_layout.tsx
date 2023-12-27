@@ -4,7 +4,6 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useColorScheme } from 'react-native';
-import { AuthContext } from './login';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -46,21 +45,12 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
-  const [authState, setAuthState] = useState({
-    id: '',
-    username: '',
-    signedIn: false
-  });
-
   return (
-    <AuthContext.Provider value={[authState, setAuthState]}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-          <Stack.Screen name="login" options={{}} />
+          <Stack.Screen name="login" options={{ presentation: 'modal' }} />
         </Stack>
       </ThemeProvider>
-    </AuthContext.Provider>
   );
 }
