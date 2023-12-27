@@ -24,6 +24,7 @@ export default function LoginScreen() {
   );
 }
 
+const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     marginBottom: 10,
