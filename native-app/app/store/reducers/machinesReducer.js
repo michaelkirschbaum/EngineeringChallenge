@@ -16,10 +16,8 @@ export default machinesReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(updateScores, (state, action) => {
       // update scores data from response
-      return {
-        machines: {
-          ...state.machines
-        },
+      const newState = {
+        ...state,
         scores: {
           factory: action.payload.factory,
           machineScores: {
@@ -27,23 +25,21 @@ export default machinesReducer = createReducer(initialState, (builder) => {
           }
         }
       };
+      console.log(newState);
+      return newState;
     })
     .addCase(addPart, (state, action) => {
       // update or append new part value
-      const newState =  {
+      return {
+        ...state,
         machines: {
           ...state.machines,
           [action.payload.machineName]: {
             ...(state.machines && action.payload.machineName in state.machines && state.machines[action.payload.machineName]),
             [action.payload.partName]: action.payload.partValue
           }
-        },
-        scores: {
-          ...state.scores
         }
       };
-      console.log(newState);
-      return newState;
     })
     .addCase(resetMachineData, (state, action) => {
       // clear machine data
