@@ -1,8 +1,18 @@
 import {StatusBar} from 'expo-status-bar';
 import {Platform, StyleSheet, TextInput, Button} from 'react-native';
 import {useState, useCallback} from 'react';
+import axios from 'axios';
 
 import {Text, View} from '../components/Themed';
+
+let apiUrl: string =
+  'https://fancy-dolphin-65b07b.netlify.app/api/machine-health';
+
+if (__DEV__) {
+  apiUrl = `http://${
+    Platform?.OS === 'android' ? '10.0.2.2' : 'localhost'
+  }:3001/login`;
+}
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
@@ -10,7 +20,7 @@ export default function LoginScreen() {
   const login = useCallback(async () => {
     try {
         const response = await axios.post(apiUrl, {
-          user: username,
+          username: username,
         });
     } catch (error) {
         console.error(error);

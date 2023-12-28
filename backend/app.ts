@@ -35,9 +35,11 @@ function verifyToken(req: any, res: any, next: any) {
 app.post('/login', async (req: Request, res, Response) => {
   try {
     const { username } = req.body;
+
     const token = jwt.sign(
       { username: username },
-      process.env.TOKEN_SECRET as string
+      process.env.TOKEN_SECRET as string,
+      {}
     );
 
     res.status(200).json({
