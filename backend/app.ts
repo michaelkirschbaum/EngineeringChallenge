@@ -1,23 +1,24 @@
 import express, {Request, Response} from 'express';
 import {getMachineHealth} from './machineHealth';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import session from 'express-session';
 
 const app = express();
 const port = 3001;
-const session = require('express-session');
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-// session middleware
-app.use(session({
-  secret: '',
-  resave: false,
-  saveUnitialized: true,
-}));
-
 // set environment variables
 dotenv.config();
+
+// session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET as string,
+  resave: false,
+  saveUninitialized: true,
+}));
 
 function verifyToken(req: any, res: any, next: any) {
   const authHeader = req.headers['authorization'];
@@ -61,8 +62,7 @@ app.post('/login', async (req: Request, res, Response) => {
 });
 
 // Endpoint to get machine health score
-app.post('/machine-health', (req: Request, res: Response) => {
-  console.log(req.session.user);
+app.post('/machine-health', verifyToken, (req: any, res: Response) => {
   const result = getMachineHealth(req);
   if (result.error) {
     res.status(400).json(result);
