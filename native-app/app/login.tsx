@@ -39,6 +39,10 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Use a light status bar on iOS to account for the black space above the modal */}
+      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+
+      <View style={styles.separator} />
       <Text style={styles.label}>Username</Text>
       <TextInput
         style={styles.input}
@@ -46,10 +50,7 @@ export default function LoginScreen() {
         onChangeText={(text) => setUsername(text)}
         placeholder='Enter username'
       />
-      <Button title='Login' onPress={login} />
-
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <Button title='Submit' onPress={login} />
     </View>
   );
 }
@@ -58,7 +59,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
@@ -75,10 +75,15 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    width: '100%',
+    width: '50%',
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 20,
     paddingHorizontal: 10,
+  },
+  separator: {
+    marginVertical: 20,
+    height: 1,
+    width: '80%',
   },
 });
