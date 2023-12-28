@@ -4,6 +4,7 @@ import {useState, useCallback} from 'react';
 import axios from 'axios';
 
 import {Text, View} from '../components/Themed';
+import {useAuth} from './context/auth'
 
 let apiUrl: string =
   'https://fancy-dolphin-65b07b.netlify.app/api/machine-health';
@@ -17,11 +18,20 @@ if (__DEV__) {
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
 
+  const { setAuthState } = useAuth();
+
   const login = useCallback(async () => {
     try {
         const response = await axios.post(apiUrl, {
           username: username,
         });
+
+        if (response.data?.success) {
+          setAuthState({
+            token: response.data.token,
+            signedIn: response.data.success
+          });
+        }
     } catch (error) {
         console.error(error);
     }
