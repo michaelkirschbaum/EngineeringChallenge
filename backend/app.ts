@@ -1,5 +1,6 @@
 import express, {Request, Response} from 'express';
 import {getMachineHealth} from './machineHealth';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 const port = 3001;
