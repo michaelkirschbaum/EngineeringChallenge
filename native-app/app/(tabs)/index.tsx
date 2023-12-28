@@ -4,6 +4,7 @@ import {Link, useFocusEffect} from 'expo-router';
 import axios from 'axios';
 import {useMachineData} from '../useMachineData';
 import {useCallback, useState, useContext} from 'react';
+
 import {PartsOfMachine} from '../../components/PartsOfMachine';
 import {MachineScore} from '../../components/MachineScore';
 import {useAuth} from '../context/auth';
@@ -21,7 +22,6 @@ export default function StateScreen() {
   const {machineData, resetMachineData, loadMachineData, setScores} =
     useMachineData();
 
-  const [authState, setAuthState] = useContext(AuthContext);
   const {authState} = useAuth()
 
   //Doing this because we're not using central state like redux
