@@ -6,7 +6,7 @@ import {useMachineData} from '../useMachineData';
 import {useCallback, useState, useContext} from 'react';
 import {PartsOfMachine} from '../../components/PartsOfMachine';
 import {MachineScore} from '../../components/MachineScore';
-import {AuthContext} from '../login';
+import {useAuth} from '../context/auth';
 
 let apiUrl: string =
   'https://fancy-dolphin-65b07b.netlify.app/api/machine-health';
@@ -22,6 +22,7 @@ export default function StateScreen() {
     useMachineData();
 
   const [authState, setAuthState] = useContext(AuthContext);
+  const {authState} = useAuth()
 
   //Doing this because we're not using central state like redux
   useFocusEffect(
@@ -34,6 +35,8 @@ export default function StateScreen() {
     try {
       const response = await axios.post(apiUrl, {
         machines: machineData?.machines,
+      }, {
+        headers: { 'Authorization': `Bearer ${authState.token}` },
       });
 
       if (response.data?.factory) {
