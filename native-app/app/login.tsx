@@ -1,13 +1,21 @@
 import {StatusBar} from 'expo-status-bar';
 import {Platform, StyleSheet, TextInput, Button} from 'react-native';
-import {useState} from 'react';
+import {useState, useCallback} from 'react';
 
 import {Text, View} from '../components/Themed';
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
 
-  const login = () => {}
+  const login = useCallback(async () => {
+    try {
+        const response = await axios.post(apiUrl, {
+          user: username,
+        });
+    } catch (error) {
+        console.error(error);
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
